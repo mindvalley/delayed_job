@@ -18,7 +18,7 @@ module Delayed
     DEFAULT_READ_AHEAD       = 5
 
     cattr_accessor :min_priority, :max_priority, :max_attempts, :max_run_time,
-      :default_priority, :sleep_delay, :logger, :delay_jobs, :queues,
+      :default_priority, :sleep_delay, :logger, :delay_jobs, :queues, :not_queues,
       :read_ahead, :plugins, :destroy_failed_jobs, :exit_on_complete
 
     # Named queue into which jobs are enqueued by default
@@ -109,7 +109,7 @@ module Delayed
     def initialize(options={})
       @quiet = options.has_key?(:quiet) ? options[:quiet] : true
 
-      [:min_priority, :max_priority, :sleep_delay, :read_ahead, :queues, :exit_on_complete].each do |option|
+      [:min_priority, :max_priority, :sleep_delay, :read_ahead, :queues, :not_queues, :exit_on_complete].each do |option|
         self.class.send("#{option}=", options[option]) if options.has_key?(option)
       end
 
