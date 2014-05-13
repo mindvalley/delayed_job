@@ -387,6 +387,33 @@ shared_examples_for "a delayed_job backend" do
         expect(SimpleJob.runs).to eq(3)
       end
     end
+
+    context "only works off jobs which are not from its not_queue" do
+      before(:each) do
+        worker.not_queues = ["one"]
+      end
+
+      it "does not work on jobs on not_queues" do
+        expect(SimpleJob.runs).to eq(0)
+
+        create_job(:queue => "one")
+        worker.work_off
+
+        expect(SimpleJob.runs).to eq(0)
+      end
+
+      it "only works on jobs not on not_queues" do
+        expect(SimpleJob.runs).to eq(0)
+
+        create_job(:queue => "one")
+        create_job(:queue => "two")
+        create_job(:queue => "three")
+        create_job
+        worker.work_off
+
+        expect(SimpleJob.runs).to eq(3)
+      end
+    end
   end
 
   context "max_attempts" do
