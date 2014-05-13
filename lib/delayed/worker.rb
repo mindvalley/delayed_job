@@ -14,6 +14,7 @@ module Delayed
     DEFAULT_DEFAULT_PRIORITY = 0
     DEFAULT_DELAY_JOBS       = true
     DEFAULT_QUEUES           = []
+    DEFAULT_NOT_QUEUES       = []
     DEFAULT_READ_AHEAD       = 5
 
     cattr_accessor :min_priority, :max_priority, :max_attempts, :max_run_time,
@@ -35,6 +36,7 @@ module Delayed
       self.default_priority = DEFAULT_DEFAULT_PRIORITY
       self.delay_jobs       = DEFAULT_DELAY_JOBS
       self.queues           = DEFAULT_QUEUES
+      self.not_queues       = DEFAULT_NOT_QUEUES
       self.read_ahead       = DEFAULT_READ_AHEAD
     end
 

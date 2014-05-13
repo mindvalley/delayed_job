@@ -61,9 +61,10 @@ module Delayed
             !j.failed?
           end
 
-          jobs = jobs.select{|j| Worker.queues.include?(j.queue)}   if Worker.queues.any?
-          jobs = jobs.select{|j| j.priority >= Worker.min_priority} if Worker.min_priority
-          jobs = jobs.select{|j| j.priority <= Worker.max_priority} if Worker.max_priority
+          jobs = jobs.select{|j| Worker.queues.include?(j.queue)}       if Worker.queues.any?
+          jobs = jobs.select{|j| !Worker.not_queues.include?(j.queue)}  if Worker.not_queues.any?
+          jobs = jobs.select{|j| j.priority >= Worker.min_priority}     if Worker.min_priority
+          jobs = jobs.select{|j| j.priority <= Worker.max_priority}     if Worker.max_priority
           jobs.sort_by{|j| [j.priority, j.run_at]}[0..limit-1]
         end
 
